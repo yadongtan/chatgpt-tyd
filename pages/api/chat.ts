@@ -15,13 +15,20 @@ export const config = {
 
 const handler = async (req: Request): Promise<Response> => {
   try {
-    const { model, messages, key, prompt, temperature } = (await req.json()) as ChatBody;
+    const {model, messages, key, prompt, temperature} =
+        (
+            await req.json()
+        ) as ChatBody;
+    console.log("model.id = " + ChatBody.model.id);
+    console.log("model.name = " + ChatBody.model.name);
+    console.log("message.role = " + messages.role);
+    console.log("message.content = " + messages.content);
 
     await init((imports) => WebAssembly.instantiate(wasm, imports));
     const encoding = new Tiktoken(
-        tiktokenModel.bpe_ranks,
-        tiktokenModel.special_tokens,
-        tiktokenModel.pat_str,
+      tiktokenModel.bpe_ranks,
+      tiktokenModel.special_tokens,
+      tiktokenModel.pat_str,
     );
 
     let promptToSend = prompt;
@@ -51,15 +58,10 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     encoding.free();
-    console.log("messagesToSend =", messagesToSend);
-
+    console.log("messagesToSend = " +messagesToSend);
     const stream = await OpenAIStream(model, promptToSend, temperatureToUse, key, messagesToSend);
 
-    const response = new Response(stream);
-
-    console.log("Response =", response); // 添加日志输出
-
-    return response;
+    return new Response(stream);
   } catch (error) {
     console.error(error);
     if (error instanceof OpenAIError) {
