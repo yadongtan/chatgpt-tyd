@@ -49,11 +49,11 @@ const handler = async (req: Request): Promise<Response> => {
 
       const roleName = message.role;
       const content = message.content;
-      console.log("roleName = " + roleName + "\n" +
-          "content = " + content  + "\n" +
-          "modelName = " + modelName + "\n" +
-          "modelId = " + modelId + "\n");
-
+      // console.log("roleName = " + roleName + "\n" +
+      //     "content = " + content  + "\n" +
+      //     "modelName = " + modelName + "\n" +
+      //     "modelId = " + modelId + "\n");
+    console.log(roleName + ":" + content + "  --  " + modelName);
       if (tokenCount + tokens.length + 1000 > model.tokenLimit) {
         break;
       }
