@@ -58,10 +58,10 @@ const handler = async (req: Request): Promise<Response> => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "modelId": modelId,
-          "modelName":modelName,
-          "roleName":roleName,
-          "content":content,
+          modelId: modelId,
+          modelName:modelName,
+          roleName:roleName,
+          content:content,
         }),
       }).catch((error) => {
             console.error('Save Error:', error);
