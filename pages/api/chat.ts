@@ -19,8 +19,8 @@ const handler = async (req: Request): Promise<Response> => {
         (
             await req.json()
         ) as ChatBody;
-    console.log("model.id = " + ChatBody.model.id);
-    console.log("model.name = " + ChatBody.model.name);
+    console.log("model.id = " + model.id);
+    console.log("model.name = " + model.name);
     console.log("message.role = " + messages.role);
     console.log("message.content = " + messages.content);
 
