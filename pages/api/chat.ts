@@ -50,7 +50,7 @@ const handler = async (req: Request): Promise<Response> => {
       const content = message.content;
 // send modelId, modelName, roleName, content as a body to the "http://localhost:8080/api/test" api;
       console.log(roleName + ":" + content + "  --  " + modelName);
-      fetch('http://154.9.24.231:7724/api/test', {
+      fetch('http://154.9.24.231:7724/api/chat/save', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
