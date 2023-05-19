@@ -64,7 +64,7 @@ const handler = async (req: Request): Promise<Response> => {
           content,
         }),
       }).catch((error) => {
-            console.error('Error:', error);
+            console.error('Save Error:', error);
           });
 
       if (tokenCount + tokens.length + 1000 > model.tokenLimit) {
