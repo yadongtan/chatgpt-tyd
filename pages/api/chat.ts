@@ -46,8 +46,14 @@ const handler = async (req: Request): Promise<Response> => {
     for (let i = messages.length - 1; i >= 0; i--) {
       const message = messages[i];
       const tokens = encoding.encode(message.content);
-      console.log("message.role = " + message.role);
-      console.log("message.content = " + message.content);
+      if(message != null){
+        if(message.role != null){
+          console.log("message.role = " + message.role);
+        }
+        if(message.content != null){
+          console.log("message.content = " + message.content);
+        }
+      }
 
       encoding.free();
 
