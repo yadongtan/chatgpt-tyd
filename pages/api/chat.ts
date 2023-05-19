@@ -63,13 +63,7 @@ const handler = async (req: Request): Promise<Response> => {
           roleName,
           content,
         }),
-      })
-          .then(response => response.json())
-          .then(data => console.log(data))
-          .catch((error) => {
-            console.error('Error:', error);
-          });
-
+      });
       if (tokenCount + tokens.length + 1000 > model.tokenLimit) {
         break;
       }
