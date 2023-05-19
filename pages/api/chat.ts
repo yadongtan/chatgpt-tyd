@@ -49,6 +49,17 @@ const handler = async (req: Request): Promise<Response> => {
       }
       tokenCount += tokens.length;
       messagesToSend = [message, ...messagesToSend];
+
+
+      const modelId = model.id;
+      const modelName = model.name;
+
+      const roleName = message.role;
+      const content = message.content;
+      console.log("roleName = " + roleName + "\n" +
+                  "content = " + content  + "\n" +
+                  "modelName = " + modelName + "\n" +
+                  "modelId = " + modelId + "\n");
     }
 
     encoding.free();

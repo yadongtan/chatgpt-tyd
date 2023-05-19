@@ -24,11 +24,11 @@ export class OpenAIError extends Error {
 }
 
 export const OpenAIStream = async (
-  model: OpenAIModel,
-  systemPrompt: string,
-  temperature : number,
-  key: string,
-  messages: Message[],
+    model: OpenAIModel,
+    systemPrompt: string,
+    temperature: number,
+    key: string,
+    messages: Message[],
 ) => {
   let url = `${OPENAI_API_HOST}/v1/chat/completions`;
   if (OPENAI_API_TYPE === 'azure') {
@@ -68,18 +68,19 @@ export const OpenAIStream = async (
 
   if (res.status !== 200) {
     const result = await res.json();
+    console.log("result = " + result);
     if (result.error) {
       throw new OpenAIError(
-        result.error.message,
-        result.error.type,
-        result.error.param,
-        result.error.code,
+          result.error.message,
+          result.error.type,
+          result.error.param,
+          result.error.code,
       );
     } else {
       throw new Error(
-        `OpenAI API returned an error: ${
-          decoder.decode(result?.value) || result.statusText
-        }`,
+          `OpenAI API returned an error: ${
+              decoder.decode(result?.value) || result.statusText
+          }`,
       );
     }
   }
