@@ -21,9 +21,6 @@ const handler = async (req: Request): Promise<Response> => {
         ) as ChatBody;
     console.log("model.id = " + model.id);
     console.log("model.name = " + model.name);
-    console.log("message.role = " + messages.role);
-    console.log("message.content = " + messages.content);
-
     await init((imports) => WebAssembly.instantiate(wasm, imports));
     const encoding = new Tiktoken(
       tiktokenModel.bpe_ranks,
@@ -50,6 +47,7 @@ const handler = async (req: Request): Promise<Response> => {
       const message = messages[i];
       const tokens = encoding.encode(message.content);
 
+
       if (tokenCount + tokens.length + 1000 > model.tokenLimit) {
         break;
       }
@@ -59,6 +57,9 @@ const handler = async (req: Request): Promise<Response> => {
 
     encoding.free();
     console.log("messagesToSend = " +messagesToSend);
+    console.log("message.role = " + messagesToSend.role);
+    console.log("message.content = " + messagesToSend.content);
+
     const stream = await OpenAIStream(model, promptToSend, temperatureToUse, key, messagesToSend);
 
     return new Response(stream);
