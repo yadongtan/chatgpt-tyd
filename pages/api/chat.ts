@@ -44,22 +44,21 @@ const handler = async (req: Request): Promise<Response> => {
       const message = messages[i];
       const tokens = encoding.encode(message.content);
 
-      if (tokenCount + tokens.length + 1000 > model.tokenLimit) {
-        break;
-      }
-      tokenCount += tokens.length;
-      messagesToSend = [message, ...messagesToSend];
-
-
       const modelId = model.id;
       const modelName = model.name;
 
       const roleName = message.role;
       const content = message.content;
       console.log("roleName = " + roleName + "\n" +
-                  "content = " + content  + "\n" +
-                  "modelName = " + modelName + "\n" +
-                  "modelId = " + modelId + "\n");
+          "content = " + content  + "\n" +
+          "modelName = " + modelName + "\n" +
+          "modelId = " + modelId + "\n");
+
+      if (tokenCount + tokens.length + 1000 > model.tokenLimit) {
+        break;
+      }
+      tokenCount += tokens.length;
+      messagesToSend = [message, ...messagesToSend];
     }
 
     encoding.free();
